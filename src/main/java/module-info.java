@@ -1,0 +1,19 @@
+module me.ildarorama.modbuscollector {
+    requires javafx.controls;
+    requires javafx.fxml;
+    requires javafx.web;
+    requires javafx.swing;
+
+    requires com.fazecast.jSerialComm;
+    requires j2mod;
+    requires slf4j.api;
+    requires logback.classic;
+    requires logback.core;
+    requires java.sql;
+    requires org.apache.poi.ooxml;
+
+    opens me.ildarorama.modbuscollector to javafx.fxml;
+    exports me.ildarorama.modbuscollector;
+    exports me.ildarorama.modbuscollector.support;
+    opens me.ildarorama.modbuscollector.support to javafx.fxml;
+}
