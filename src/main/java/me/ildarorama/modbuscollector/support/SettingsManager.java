@@ -27,7 +27,7 @@ public class SettingsManager {
     }
     private Runnable saveCallback = null;
     private String port = "";
-    private int speed = 19200;
+    private PortSpeedEnum speed = PortSpeedEnum.SPEED_9600;
     private double period = 1;
     private int slave = 1;
 
@@ -43,7 +43,7 @@ public class SettingsManager {
         if (file.exists()) {
             try(InputStream is = new FileInputStream(file)) {
                 properties.load(is);
-                speed = Integer.valueOf(properties.getProperty("speed", "19200"));
+                speed = PortSpeedEnum.valueOf(properties.getProperty("speed", "19200"));
                 slave = Integer.valueOf(properties.getProperty("slave", "1"));
                 port = properties.getProperty("port");
                 period = Double.valueOf(properties.getProperty("period", "1"));
@@ -57,7 +57,7 @@ public class SettingsManager {
         Properties properties = new Properties();
         File file = new File("settings.properties");
             try(OutputStream is = new FileOutputStream(file)) {
-                properties.setProperty("speed", Integer.toString(speed));
+                properties.setProperty("speed", speed.name());
                 properties.setProperty("period", Double.toString(period));
                 properties.setProperty("slave", Integer.toString(slave));
                 properties.setProperty("port", port);
@@ -85,11 +85,11 @@ public class SettingsManager {
         this.port = port;
     }
 
-    public int getSpeed() {
+    public PortSpeedEnum getSpeed() {
         return speed;
     }
 
-    public void setSpeed(int speed) {
+    public void setSpeed(PortSpeedEnum speed) {
         this.speed = speed;
     }
 

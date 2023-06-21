@@ -7,20 +7,21 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
+import me.ildarorama.modbuscollector.support.PortSpeedEnum;
 import me.ildarorama.modbuscollector.support.SettingsManager;
 
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 public class SettingsController implements Initializable {
-    private static final List<Integer> SPEEDS = List.of(
-            115200, 57600, 34800, 19200, 9600);
     @FXML
     private ComboBox<String> cbxPort;
     @FXML
-    private ComboBox<Integer> cbxSpeed;
+    private ComboBox<PortSpeedEnum> cbxSpeed;
     @FXML
     private Spinner<Integer> edtSlave;
     @FXML
@@ -29,10 +30,25 @@ public class SettingsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        var ports = Arrays.stream(SerialPort.getCommPorts()).map(SerialPort::getSystemPortName).toList();
+        List<String> ports = Arrays.stream(SerialPort.getCommPorts()).map(SerialPort::getSystemPortName).collect(Collectors.toList());
 
+        cbxSpeed.setConverter(new StringConverter<PortSpeedEnum>() {
+            @Override
+            public String toString(PortSpeedEnum user) {
+                if (user== null){
+                    return null;
+                } else {
+                    return Integer.toString(user.speed());
+                }
+            }
+
+            @Override
+            public PortSpeedEnum fromString(String id) {
+                return PortSpeedEnum.valueOf(id);
+            }
+        });
         cbxPort.getItems().addAll(ports);
-        cbxSpeed.getItems().addAll(SPEEDS);
+        cbxSpeed.getItems().addAll(Arrays.stream(PortSpeedEnum.values()).collect(Collectors.toList()));
 
         SpinnerValueFactory.IntegerSpinnerValueFactory factory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 255);
         edtSlave.setValueFactory(factory);

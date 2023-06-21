@@ -103,6 +103,12 @@ public class HelloController implements Initializable {
     }
 
     @FXML
+    public void onExitClick() {
+        Platform.exit();
+        System.exit(0);
+    }
+
+    @FXML
     protected void onHelloButtonClick() throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("settings.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 640, 240);

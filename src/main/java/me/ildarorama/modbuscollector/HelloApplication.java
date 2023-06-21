@@ -36,12 +36,6 @@ public class HelloApplication extends Application {
     public void stop(){
         thread.stopWorker();
         thread.cancel();
-        //thread.interrupt();
-//        try {
-//         //   thread.join(1000);
-//        } catch (InterruptedException e) {
-////            thread.stop();
-//        }
     }
     public static void main(String[] args) {
         launch();

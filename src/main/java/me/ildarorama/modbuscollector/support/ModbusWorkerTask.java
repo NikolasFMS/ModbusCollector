@@ -2,6 +2,7 @@ package me.ildarorama.modbuscollector.support;
 
 import com.ghgande.j2mod.modbus.ModbusException;
 import com.ghgande.j2mod.modbus.facade.AbstractModbusMaster;
+import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.ghgande.j2mod.modbus.facade.ModbusTCPMaster;
 import com.ghgande.j2mod.modbus.procimg.InputRegister;
 import com.ghgande.j2mod.modbus.util.SerialParameters;
@@ -65,7 +66,7 @@ public class ModbusWorkerTask extends Task<DeviceResponse> {
     }
 
     private DeviceResponse parseResponse(InputRegister[] registers) {
-        var resp = new DeviceResponse();
+        DeviceResponse resp = new DeviceResponse();
         resp.setTimestamp(LocalDateTime.now());
         resp.setA1(registers[0].getValue());
         resp.setA2(registers[1].getValue());
@@ -98,19 +99,19 @@ public class ModbusWorkerTask extends Task<DeviceResponse> {
     }
 
     private AbstractModbusMaster openConnection() throws Exception {
-        var port = settings.getPort();
-        if (port == null || port.isBlank()) {
+        String port = settings.getPort();
+        if (port == null || port.isEmpty()) {
             throw new ModbusException("Серийный порт не выбран");
         }
 
         AbstractModbusMaster master;
         SerialParameters params = new SerialParameters();
         params.setPortName(settings.getPort());
-        params.setBaudRate(settings.getSpeed());
+        params.setBaudRate(settings.getSpeed().speed());
         params.setParity("N");
         params.setStopbits(1);
         params.setDatabits(8);
-        //master = new ModbusSerialMaster(params, 1000);
+        //master = new ModbusSerialMaster(params, 300);
         master = new ModbusTCPMaster("127.0.0.1", 5002);
         master.connect();
         return master;

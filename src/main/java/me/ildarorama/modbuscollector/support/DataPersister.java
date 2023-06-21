@@ -33,12 +33,12 @@ public class DataPersister {
     private void initDb() {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:collector.db");
-            conn.createStatement().execute("""
-                            create table if not exists log(ID INTEGER PRIMARY KEY AUTOINCREMENT, STMP DATETIME NOT NULL, A INT);
-                    """);
-            stmt = conn.prepareStatement("""
-                    INSERT INTO log(STMP, A) values (?, ?)
-                    """);
+            conn.createStatement().execute(
+                            "create table if not exists log(ID INTEGER PRIMARY KEY AUTOINCREMENT, STMP DATETIME NOT NULL, A INT)"
+                    );
+            stmt = conn.prepareStatement(
+                    "INSERT INTO log(STMP, A) values (?, ?)"
+                    );
         } catch (Exception e) {
             log.error("Не могу инициализировать базу данных", e);
         }
@@ -46,11 +46,11 @@ public class DataPersister {
 
     public ResultSet report(LocalDateTime from, LocalDateTime to) {
         try {
-            var selectStmt = conn.prepareStatement("select * from log where stmp > ? and stmp < ?");
+            PreparedStatement selectStmt = conn.prepareStatement("select * from log where stmp > ? and stmp < ?");
             stmt.setLong(1, from.toInstant(ZoneOffset.UTC).toEpochMilli());
             stmt.setLong(2, to.toInstant(ZoneOffset.UTC).toEpochMilli());
 
-            var result = selectStmt.execute();
+            boolean result = selectStmt.execute();
             if (result) {
                 return selectStmt.getResultSet();
             }

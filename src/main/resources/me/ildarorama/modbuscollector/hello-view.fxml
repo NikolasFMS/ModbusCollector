@@ -92,7 +92,7 @@
                             <content>
                         <FlowPane>
                            <children>
-                                      <GridPane minWidth="300.0">
+                                      <GridPane hgap="5.0" minWidth="300.0" vgap="5.0">
                                           <columnConstraints>
                                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                                               <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -111,6 +111,9 @@
                                               <Label text="До" GridPane.rowIndex="2" />
                                               <DatePicker fx:id="edtTo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                           </children>
+                                 <padding>
+                                    <Insets top="5.0" />
+                                 </padding>
                                       </GridPane>
                            </children>
                         </FlowPane>
@@ -142,7 +145,7 @@
                 <Menu mnemonicParsing="false" text="Файл">
                     <items>
                         <MenuItem mnemonicParsing="false" onAction="#onHelloButtonClick" text="Настройки" />
-                        <MenuItem mnemonicParsing="false" text="Закрыть" />
+                        <MenuItem mnemonicParsing="false" onAction="#onExitClick" text="Закрыть" />
                     </items>
                 </Menu>
             </menus>
