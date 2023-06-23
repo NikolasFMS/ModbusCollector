@@ -38,10 +38,10 @@
             <items>
                 <GridPane maxHeight="500" minHeight="150.0" prefHeight="360.0" prefWidth="528.0">
                     <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="240.0" minWidth="10.0" prefWidth="240.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="174.0" minWidth="10.0" prefWidth="82.0" />
+                        <ColumnConstraints hgrow="ALWAYS" maxWidth="204.0" minWidth="10.0" prefWidth="132.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="96.0" minWidth="10.0" prefWidth="64.0" />
                     </columnConstraints>
                     <rowConstraints>
                         <RowConstraints />
@@ -52,26 +52,22 @@
                         <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                     </rowConstraints>
                     <children>
-                        <Label prefHeight="17.0" prefWidth="82.0" text="Параметр 6" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-                        <Label prefHeight="17.0" prefWidth="76.0" text="Пераметр 2" GridPane.rowIndex="2" />
-                        <Label prefHeight="17.0" prefWidth="76.0" text="Пераметр 3" GridPane.rowIndex="3" />
-                        <Label prefHeight="17.0" prefWidth="76.0" text="Пераметр 4" GridPane.rowIndex="4" />
+                        <Label prefHeight="17.0" prefWidth="228.0" text="P воды на входе" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                        <Label prefHeight="17.0" prefWidth="180.0" text="Тc.отраб.газов на выходе 514" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+                        <Label prefHeight="17.0" prefWidth="199.0" text="ДР отраб. газов 516" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+                        <Label prefHeight="17.0" prefWidth="201.0" text="Тс воды на входе 518" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
                         <Label fx:id="param1" prefHeight="17.0" prefWidth="82.0" text=" " GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label fx:id="param2" prefHeight="17.0" prefWidth="82.0" text=" " GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <Label fx:id="param3" prefHeight="17.0" prefWidth="82.0" text=" " GridPane.columnIndex="1" GridPane.rowIndex="3" />
                         <Label fx:id="param4" prefHeight="17.0" prefWidth="82.0" text=" " GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                        <Label prefHeight="17.0" prefWidth="82.0" text="Параметр 1" GridPane.rowIndex="1" />
-                        <Label prefHeight="17.0" prefWidth="82.0" text="Параметр 7" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-                        <Label prefHeight="17.0" prefWidth="82.0" text="Параметр 8" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-                        <Label prefHeight="17.0" prefWidth="82.0" text="Параметр 9" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-                        <Label prefHeight="17.0" prefWidth="76.0" text="Пераметр 5" GridPane.rowIndex="5" />
+                        <Label prefHeight="17.0" prefWidth="188.0" text="Тc.отраб.газов на входе 512" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+                        <Label prefHeight="17.0" prefWidth="183.0" text="P воды на выходе" GridPane.columnIndex="2" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+                        <Label prefHeight="17.0" prefWidth="140.0" text="Параметр 8" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                        <Label prefHeight="17.0" prefWidth="177.0" text="Тс воды на выходе 520" GridPane.rowIndex="5" />
                         <Label fx:id="param5" prefHeight="17.0" prefWidth="82.0" text=" " GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                        <Label prefHeight="17.0" prefWidth="82.0" text="Параметр 10" GridPane.columnIndex="2" GridPane.rowIndex="5" />
                         <Label fx:id="param6" prefHeight="17.0" prefWidth="82.0" text=" " GridPane.columnIndex="3" GridPane.rowIndex="1" />
                         <Label fx:id="param7" prefHeight="17.0" prefWidth="82.0" text=" " GridPane.columnIndex="3" GridPane.rowIndex="2" />
                         <Label fx:id="param8" prefHeight="17.0" prefWidth="82.0" text=" " GridPane.columnIndex="3" GridPane.rowIndex="3" />
-                        <Label fx:id="param9" prefHeight="17.0" prefWidth="82.0" text=" " GridPane.columnIndex="3" GridPane.rowIndex="4" />
-                        <Label fx:id="param10" prefHeight="17.0" prefWidth="82.0" text=" " GridPane.columnIndex="3" GridPane.rowIndex="5" />
                     </children>
                 </GridPane>
                 <TabPane prefHeight="432.0" prefWidth="528.0" tabClosingPolicy="UNAVAILABLE">

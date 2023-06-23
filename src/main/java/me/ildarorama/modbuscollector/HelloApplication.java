@@ -26,6 +26,7 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
         HelloController ctrl = fxmlLoader.getController();
         ctrl.setThread(thread);
+        ctrl.setHostServices(getHostServices());
         stage.setTitle("Сборщик метрик");
         stage.setScene(scene);
         stage.show();

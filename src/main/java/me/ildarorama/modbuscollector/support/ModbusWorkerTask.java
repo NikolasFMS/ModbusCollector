@@ -10,6 +10,8 @@ import javafx.concurrent.Task;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.nio.ByteBuffer;
+import java.nio.ShortBuffer;
 import java.time.LocalDateTime;
 
 public class ModbusWorkerTask extends Task<DeviceResponse> {
@@ -19,6 +21,8 @@ public class ModbusWorkerTask extends Task<DeviceResponse> {
     private volatile int period;
     private volatile int slave;
     private final SettingsManager settings;
+    private ByteBuffer bb = ByteBuffer.allocate(4);
+    private ShortBuffer sb = bb.asShortBuffer();
 
     public ModbusWorkerTask() {
         super();
@@ -46,14 +50,15 @@ public class ModbusWorkerTask extends Task<DeviceResponse> {
                     updateMessage("Соединен");
                 }
 
-                InputRegister[] registers = conn.readInputRegisters(slave, 1,10);
-                if (registers == null || registers.length != 10) {
+                InputRegister[] registers = conn.readInputRegisters(slave, 512,15);
+                if (registers == null || registers.length != 15) {
                     throw new IllegalStateException("Invalid response");
                 }
                 DeviceResponse resp = parseResponse(registers);
                 updateValue(resp);
-
-                Thread.sleep(period);
+                if (running) {
+                    Thread.sleep(period);
+                }
             } catch (InterruptedException e) {
                 log.info("Завершение опроса");
             } catch (Exception e) {
@@ -68,18 +73,23 @@ public class ModbusWorkerTask extends Task<DeviceResponse> {
     private DeviceResponse parseResponse(InputRegister[] registers) {
         DeviceResponse resp = new DeviceResponse();
         resp.setTimestamp(LocalDateTime.now());
-        resp.setA1(registers[0].getValue());
-        resp.setA2(registers[1].getValue());
-        resp.setA3(registers[2].getValue());
-        resp.setA4(registers[3].getValue());
-        resp.setA5(registers[4].getValue());
-        resp.setA6(registers[5].getValue());
-        resp.setA7(registers[6].getValue());
-        resp.setA8(registers[7].getValue());
-        resp.setA9(registers[8].getValue());
-        resp.setA10(registers[9].getValue());
-
+        resp.setA1(getFloat(registers,0));
+        resp.setA2(getFloat(registers,2));
+        resp.setA3(getFloat(registers,4));
+        resp.setA4(getFloat(registers,6));
+        resp.setA5(getFloat(registers,8));
+        resp.setA6(getFloat(registers,10));
+        resp.setA7(getFloat(registers,12));
+        resp.setA8(registers[14].getValue());
         return resp;
+    }
+
+    private float getFloat(InputRegister[] registers, int offset) {
+        int i = registers[offset + 1].getValue();
+        int j = registers[offset].getValue();
+        sb.put(0, (short) i);
+        sb.put(1, (short) j);
+        return Float.intBitsToFloat(bb.getInt(0));
     }
 
     private void closeConnection() {
@@ -94,7 +104,9 @@ public class ModbusWorkerTask extends Task<DeviceResponse> {
         }
         try {
             log.info("Не возможно установить соединение. Ожидание 10 сек");
-            Thread.sleep(10000);
+            if (running) {
+                Thread.sleep(10000);
+            }
         } catch (InterruptedException ignored) {}
     }
 
@@ -105,14 +117,17 @@ public class ModbusWorkerTask extends Task<DeviceResponse> {
         }
 
         AbstractModbusMaster master;
-        SerialParameters params = new SerialParameters();
-        params.setPortName(settings.getPort());
-        params.setBaudRate(settings.getSpeed().speed());
-        params.setParity("N");
-        params.setStopbits(1);
-        params.setDatabits(8);
-        //master = new ModbusSerialMaster(params, 300);
-        master = new ModbusTCPMaster("127.0.0.1", 5002);
+        if ("y".equals(System.getProperty("test", "n"))) {
+            master = new ModbusTCPMaster("127.0.0.1", 5002);
+        } else {
+            SerialParameters params = new SerialParameters();
+            params.setPortName(settings.getPort());
+            params.setBaudRate(settings.getSpeed().speed());
+            params.setParity("N");
+            params.setStopbits(1);
+            params.setDatabits(8);
+            master = new ModbusSerialMaster(params, 300);
+        }
         master.connect();
         return master;
     }

@@ -30,7 +30,8 @@ public class SettingsController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        List<String> ports = Arrays.stream(SerialPort.getCommPorts()).map(SerialPort::getSystemPortName).collect(Collectors.toList());
+        List<String> ports = Arrays.stream(SerialPort.getCommPorts())
+                .map(SerialPort::getSystemPortName).collect(Collectors.toList());
 
         cbxSpeed.setConverter(new StringConverter<PortSpeedEnum>() {
             @Override

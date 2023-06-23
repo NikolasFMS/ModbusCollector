@@ -10,28 +10,31 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.file.Files;
 import java.util.Properties;
 
 public class SettingsManager {
     private static class SettingManagerHolder {
         private static final SettingsManager instance = new SettingsManager();
+
         static {
             instance.load();
         }
     }
 
-    private SettingsManager() {}
-
-    public static SettingsManager getInstance() {
-        return SettingManagerHolder.instance;
+    private SettingsManager() {
     }
+
+    private final ObservableList<ILoggingEvent> log = FXCollections.observableArrayList();
     private Runnable saveCallback = null;
     private String port = "";
     private PortSpeedEnum speed = PortSpeedEnum.SPEED_9600;
     private double period = 1;
     private int slave = 1;
 
-    private ObservableList<ILoggingEvent> log = FXCollections.observableArrayList();
+    public static SettingsManager getInstance() {
+        return SettingManagerHolder.instance;
+    }
 
     public void setSaveCallback(Runnable callback) {
         saveCallback = callback;
@@ -41,13 +44,13 @@ public class SettingsManager {
         Properties properties = new Properties();
         File file = new File("settings.properties");
         if (file.exists()) {
-            try(InputStream is = new FileInputStream(file)) {
+            try (InputStream is = new FileInputStream(file)) {
                 properties.load(is);
                 speed = PortSpeedEnum.valueOf(properties.getProperty("speed", "19200"));
                 slave = Integer.valueOf(properties.getProperty("slave", "1"));
                 port = properties.getProperty("port");
                 period = Double.valueOf(properties.getProperty("period", "1"));
-            } catch(Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
@@ -56,21 +59,21 @@ public class SettingsManager {
     public void save() {
         Properties properties = new Properties();
         File file = new File("settings.properties");
-            try(OutputStream is = new FileOutputStream(file)) {
-                properties.setProperty("speed", speed.name());
-                properties.setProperty("period", Double.toString(period));
-                properties.setProperty("slave", Integer.toString(slave));
-                properties.setProperty("port", port);
-                properties.store(is, "Modbus collector settings file");
-                if (saveCallback != null) {
-                    saveCallback.run();
-                }
-            } catch(Exception e) {
-                Alert a = new Alert(Alert.AlertType.ERROR);
-                a.setTitle("Ошибка");
-                a.setContentText("Ошибка сохранения настроек");
-                a.showAndWait();
+        try (OutputStream is = Files.newOutputStream(file.toPath())) {
+            properties.setProperty("speed", speed.name());
+            properties.setProperty("period", Double.toString(period));
+            properties.setProperty("slave", Integer.toString(slave));
+            properties.setProperty("port", port);
+            properties.store(is, "Modbus collector settings file");
+            if (saveCallback != null) {
+                saveCallback.run();
             }
+        } catch (Exception e) {
+            Alert a = new Alert(Alert.AlertType.ERROR);
+            a.setTitle("Ошибка");
+            a.setContentText("Ошибка сохранения настроек");
+            a.showAndWait();
+        }
     }
 
     public ObservableList<ILoggingEvent> getLog() {

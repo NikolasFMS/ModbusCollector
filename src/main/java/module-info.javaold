@@ -1,8 +1,7 @@
 module me.ildarorama.modbuscollector {
     requires javafx.controls;
     requires javafx.fxml;
-    requires javafx.web;
-    requires javafx.swing;
+    requires java.naming;
 
     requires com.fazecast.jSerialComm;
     requires j2mod;

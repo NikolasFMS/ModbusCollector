@@ -1,6 +1,7 @@
 package me.ildarorama.modbuscollector;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -30,7 +31,6 @@ import me.ildarorama.modbuscollector.support.SettingsManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -39,11 +39,23 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class HelloController implements Initializable {
     private static final Logger log = LoggerFactory.getLogger(HelloController.class);
+    public static final List<String> PARAMS = Arrays.asList(
+            "Тc.отраб.газов на входе 512",
+            "Тc.отраб.газов на выходе 514",
+            "ДР отраб. газов 516",
+            "Тс воды на входе 518",
+            "Тс воды на выходе 520",
+            "P воды на входе",
+            "P воды на выходе",
+            "Параметр 8");
 
+    private HostServices hostServices;
     private Stage stage = null;
     @FXML
     private Label lblState;
@@ -63,10 +75,6 @@ public class HelloController implements Initializable {
     private Label param7;
     @FXML
     private Label param8;
-    @FXML
-    private Label param9;
-    @FXML
-    private Label param10;
     @FXML
     private DatePicker edtFrom;
     @FXML
@@ -94,11 +102,7 @@ public class HelloController implements Initializable {
         File file = fileChooser.showSaveDialog(stage);
         if (file != null) {
             dataPersister.saveExportToFile(file, edtFrom.getValue().atStartOfDay(), LocalDateTime.of(edtTo.getValue(), LocalTime.MAX));
-            try {
-                Desktop.getDesktop().open(file.getParentFile());
-            } catch (IOException e) {
-                log.error("Не могу открыть директорию с отчетом", e);
-            }
+            hostServices.showDocument("file://" + file);
         }
     }
 
@@ -148,10 +152,6 @@ public class HelloController implements Initializable {
                 Bindings.createStringBinding(new ObjectPropertyBinding<>(thread.valueProperty(), "a7"), thread.valueProperty()));
         param8.textProperty().bind(
                 Bindings.createStringBinding(new ObjectPropertyBinding<>(thread.valueProperty(), "a8"), thread.valueProperty()));
-        param9.textProperty().bind(
-                Bindings.createStringBinding(new ObjectPropertyBinding<>(thread.valueProperty(), "a9"), thread.valueProperty()));
-        param10.textProperty().bind(
-                Bindings.createStringBinding(new ObjectPropertyBinding<>(thread.valueProperty(), "a10"), thread.valueProperty()));
     }
 
     @Override
@@ -159,67 +159,63 @@ public class HelloController implements Initializable {
         edtFrom.setValue(LocalDate.now());
         edtTo.setValue(LocalDate.now());
         lstLog.setCellFactory((param) ->
-            new ListCell<ILoggingEvent>(){
-                @Override
-                public void updateItem(ILoggingEvent log, boolean empty) {
-                    super.updateItem(log, empty);
-                    if (empty) {
-                        setText(null);
-                        setGraphic(null);
-                    } else {
-                        setText(String.format("%s - %s", LocalDateTime.ofEpochSecond(log.getTimeStamp(), 0, ZoneOffset.UTC).format(DATE_TIME_FORMATTER), log.getFormattedMessage()));
-                        setGraphic(null);
+                new ListCell<ILoggingEvent>() {
+                    @Override
+                    public void updateItem(ILoggingEvent log, boolean empty) {
+                        super.updateItem(log, empty);
+                        if (empty) {
+                            setText(null);
+                            setGraphic(null);
+                        } else {
+                            setText(String.format("%s - %s", LocalDateTime.ofEpochSecond(log.getTimeStamp(), 0, ZoneOffset.UTC).format(DATE_TIME_FORMATTER), log.getFormattedMessage()));
+                            setGraphic(null);
+                        }
                     }
                 }
-            }
         );
         lstLog.itemsProperty().bind(new SimpleObjectProperty<>(SettingsManager.getInstance().getLog()));
 
         TableColumn<DeviceResponse, String> dateColumn = new TableColumn<>("Дата");
         dateColumn.setPrefWidth(200);
-        dateColumn.setCellValueFactory(v ->  new ReadOnlyObjectWrapper<>(v.getValue().getTimestamp().format(DATE_TIME_FORMATTER)));
+        dateColumn.setCellValueFactory(v -> new ReadOnlyObjectWrapper<>(v.getValue().getTimestamp().format(DATE_TIME_FORMATTER)));
         tblData.getColumns().add(dateColumn);
 
-        TableColumn<DeviceResponse, String> param1 = new TableColumn<>("Параметр 1");
+        TableColumn<DeviceResponse, String> param1 = new TableColumn<>(PARAMS.get(0));
         param1.setCellValueFactory(new PropertyValueFactory<>("a1"));
         tblData.getColumns().add(param1);
 
-        TableColumn<DeviceResponse, String> param2 = new TableColumn<>("Параметр 2");
+        TableColumn<DeviceResponse, String> param2 = new TableColumn<>(PARAMS.get(1));
         param2.setCellValueFactory(new PropertyValueFactory<>("a2"));
         tblData.getColumns().add(param2);
 
-        TableColumn<DeviceResponse, String> param3 = new TableColumn<>("Параметр 3");
+        TableColumn<DeviceResponse, String> param3 = new TableColumn<>(PARAMS.get(2));
         param3.setCellValueFactory(new PropertyValueFactory<>("a3"));
         tblData.getColumns().add(param3);
 
-        TableColumn<DeviceResponse, String> param4 = new TableColumn<>("Параметр 4");
+        TableColumn<DeviceResponse, String> param4 = new TableColumn<>(PARAMS.get(3));
         param4.setCellValueFactory(new PropertyValueFactory<>("a4"));
         tblData.getColumns().add(param4);
 
-        TableColumn<DeviceResponse, String> param5 = new TableColumn<>("Параметр 5");
+        TableColumn<DeviceResponse, String> param5 = new TableColumn<>(PARAMS.get(4));
         param5.setCellValueFactory(new PropertyValueFactory<>("a5"));
         tblData.getColumns().add(param5);
 
-        TableColumn<DeviceResponse, String> param6 = new TableColumn<>("Параметр 6");
+        TableColumn<DeviceResponse, String> param6 = new TableColumn<>(PARAMS.get(5));
         param6.setCellValueFactory(new PropertyValueFactory<>("a6"));
         tblData.getColumns().add(param6);
 
-        TableColumn<DeviceResponse, String> param7 = new TableColumn<>("Параметр 7");
+        TableColumn<DeviceResponse, String> param7 = new TableColumn<>(PARAMS.get(6));
         param7.setCellValueFactory(new PropertyValueFactory<>("a7"));
         tblData.getColumns().add(param7);
 
-        TableColumn<DeviceResponse, String> param8 = new TableColumn<>("Параметр 8");
+        TableColumn<DeviceResponse, String> param8 = new TableColumn<>(PARAMS.get(7));
         param8.setCellValueFactory(new PropertyValueFactory<>("a8"));
         tblData.getColumns().add(param8);
 
-        TableColumn<DeviceResponse, String> param9 = new TableColumn<>("Параметр 9");
-        param9.setCellValueFactory(new PropertyValueFactory<>("a9"));
-        tblData.getColumns().add(param9);
-
-        TableColumn<DeviceResponse, String> param10 = new TableColumn<>("Параметр 10");
-        param10.setCellValueFactory(new PropertyValueFactory<>("a10"));
-        tblData.getColumns().add(param10);
-
         tblData.setItems(items);
+    }
+
+    public void setHostServices(HostServices hostServices) {
+        this.hostServices = hostServices;
     }
 }

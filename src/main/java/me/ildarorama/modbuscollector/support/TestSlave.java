@@ -15,9 +15,9 @@ public class TestSlave {
         ModbusSlave slave = ModbusSlaveFactory.createTCPSlave(5002, 1);
         SimpleProcessImage img = new SimpleProcessImage(1);
         List<SimpleInputRegister> regs = new ArrayList<SimpleInputRegister>(10);
-        for(int i=1; i<11; i++) {
+        for(int i=1; i<16; i++) {
             SimpleInputRegister reg = new SimpleInputRegister(i);
-            img.addInputRegister(i, reg);
+            img.addInputRegister(i + 511, reg);
             regs.add(reg);
         }
         UpdaterThread t = new UpdaterThread(regs);
