@@ -5,6 +5,7 @@ import me.ildarorama.modbuscollector.HelloController;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -65,6 +66,7 @@ public class DataPersister {
                 CreationHelper createHelper = workbook.getCreationHelper();
                 cellStyle.setDataFormat(
                         createHelper.createDataFormat().getFormat("dd.MM.yyyy h:mm:ss"));
+                cellStyle.setAlignment(HorizontalAlignment.LEFT);
 
                 XSSFSheet sheet = workbook.createSheet("Выгрузка");
                 sheet.setColumnWidth(0, 5000);
@@ -98,25 +100,25 @@ public class DataPersister {
                     cell.setCellValue(result.getTimestamp(2));
 
                     cell = row.createCell(1);
-                    cell.setCellValue(result.getDouble(3));
+                    cell.setCellValue(String.format("%.2f", result.getFloat(3)));
 
                     cell = row.createCell(2);
-                    cell.setCellValue(result.getDouble(4));
+                    cell.setCellValue(String.format("%.2f", result.getFloat(4)));
 
                     cell = row.createCell(3);
-                    cell.setCellValue(result.getDouble(5));
+                    cell.setCellValue(String.format("%.2f", result.getFloat(5)));
 
                     cell = row.createCell(4);
-                    cell.setCellValue(result.getDouble(6));
+                    cell.setCellValue(String.format("%.2f", result.getFloat(6)));
 
                     cell = row.createCell(5);
-                    cell.setCellValue(result.getDouble(7));
+                    cell.setCellValue(String.format("%.2f", result.getFloat(7)));
 
                     cell = row.createCell(6);
-                    cell.setCellValue(result.getDouble(8));
+                    cell.setCellValue(String.format("%.2f", result.getFloat(8)));
 
                     cell = row.createCell(7);
-                    cell.setCellValue(result.getDouble(9));
+                    cell.setCellValue(String.format("%.2f", result.getFloat(9)));
 
                     cell = row.createCell(8);
                     cell.setCellValue(result.getInt(10));
@@ -138,13 +140,13 @@ public class DataPersister {
         if (stmt != null) {
             try {
                 stmt.setTimestamp(1, java.sql.Timestamp.valueOf(resp.getTimestamp()));
-                stmt.setDouble(2, resp.getA1());
-                stmt.setDouble(3, resp.getA2());
-                stmt.setDouble(4, resp.getA3());
-                stmt.setDouble(5, resp.getA4());
-                stmt.setDouble(6, resp.getA5());
-                stmt.setDouble(7, resp.getA6());
-                stmt.setDouble(8, resp.getA7());
+                stmt.setFloat(2, resp.getA1());
+                stmt.setFloat(3, resp.getA2());
+                stmt.setFloat(4, resp.getA3());
+                stmt.setFloat(5, resp.getA4());
+                stmt.setFloat(6, resp.getA5());
+                stmt.setFloat(7, resp.getA6());
+                stmt.setFloat(8, resp.getA7());
                 stmt.setInt(9, resp.getA8());
                 stmt.executeUpdate();
             } catch (SQLException e) {

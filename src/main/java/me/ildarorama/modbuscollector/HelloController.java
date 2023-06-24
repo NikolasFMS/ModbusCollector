@@ -1,6 +1,7 @@
 package me.ildarorama.modbuscollector;
 
 import ch.qos.logback.classic.spi.ILoggingEvent;
+import com.sun.javafx.charts.Legend;
 import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -11,7 +12,11 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Alert;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -20,6 +25,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -83,9 +89,20 @@ public class HelloController implements Initializable {
     private ListView<ILoggingEvent> lstLog;
     @FXML
     private TableView<DeviceResponse> tblData;
+    @FXML
+    private LineChart<String, Number> chartMain;
+    private XYChart.Series<String, Number> series1 = new XYChart.Series<>();
+    private XYChart.Series<String, Number> series2 = new XYChart.Series<>();
+    private XYChart.Series<String, Number> series3 = new XYChart.Series<>();
+    private XYChart.Series<String, Number> series4 = new XYChart.Series<>();
+    private XYChart.Series<String, Number> series5 = new XYChart.Series<>();
+    private XYChart.Series<String, Number> series6 = new XYChart.Series<>();
+    private XYChart.Series<String, Number> series7 = new XYChart.Series<>();
+    private XYChart.Series<String, Number> series8 = new XYChart.Series<>();
     private final ObservableList<DeviceResponse> items = FXCollections.observableArrayList();
     private DataPersister dataPersister;
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm:ss");
+    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     @FXML
     protected void onExportPressed() {
@@ -119,6 +136,10 @@ public class HelloController implements Initializable {
 
         SettingsController ctrl = fxmlLoader.getController();
         Stage settingStage = new Stage();
+        settingStage.setResizable(false);
+        settingStage.setMinHeight(300);
+        settingStage.setMinWidth(600);
+
         ctrl.setStage(settingStage);
         settingStage.setScene(scene);
         settingStage.setTitle("Настройки");
@@ -133,6 +154,25 @@ public class HelloController implements Initializable {
         thread.valueProperty().addListener((a, b, c) -> {
             dataPersister.persist(c);
             items.add(0, c);
+            series1.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA1()));
+            series2.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA2()));
+            series3.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA3()));
+            series4.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA4()));
+            series5.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA5()));
+            series6.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA6()));
+            series7.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA7()));
+            series8.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA8() / 100));
+
+            if (series1.getData().size() > 30) {
+                series1.getData().remove(0);
+                series2.getData().remove(0);
+                series3.getData().remove(0);
+                series4.getData().remove(0);
+                series5.getData().remove(0);
+                series6.getData().remove(0);
+                series7.getData().remove(0);
+                series8.getData().remove(0);
+            }
         });
 
 
@@ -152,6 +192,33 @@ public class HelloController implements Initializable {
                 Bindings.createStringBinding(new ObjectPropertyBinding<>(thread.valueProperty(), "a7"), thread.valueProperty()));
         param8.textProperty().bind(
                 Bindings.createStringBinding(new ObjectPropertyBinding<>(thread.valueProperty(), "a8"), thread.valueProperty()));
+    }
+
+    private void test() {
+        chartMain.setAnimated(false);
+        for (Node n : chartMain.getChildrenUnmodifiable()) {
+            if (n instanceof Legend) {
+                Legend l = (Legend) n;
+                for (Legend.LegendItem li : l.getItems()) {
+                    for (XYChart.Series<String, Number> s : chartMain.getData()) {
+                        if (s.getName().equals(li.getText())) {
+                            li.getSymbol().setCursor(Cursor.HAND); // Hint user that legend symbol is clickable
+                            li.getSymbol().setOnMouseClicked(me -> {
+                                if (me.getButton() == MouseButton.PRIMARY) {
+                                    s.getNode().setVisible(!s.getNode().isVisible()); // Toggle visibility of line
+                                    for (XYChart.Data<String, Number> d : s.getData()) {
+                                        if (d.getNode() != null) {
+                                            d.getNode().setVisible(s.getNode().isVisible()); // Toggle visibility of every node in the series
+                                        }
+                                    }
+                                }
+                            });
+                            break;
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -213,6 +280,18 @@ public class HelloController implements Initializable {
         tblData.getColumns().add(param8);
 
         tblData.setItems(items);
+        chartMain.setCreateSymbols(false);
+        chartMain.legendVisibleProperty().set(true);
+        series1.setName(PARAMS.get(0));
+        series2.setName(PARAMS.get(1));
+        series3.setName(PARAMS.get(2));
+        series4.setName(PARAMS.get(3));
+        series5.setName(PARAMS.get(4));
+        series6.setName(PARAMS.get(5));
+        series7.setName(PARAMS.get(6));
+        series8.setName(PARAMS.get(7));
+        chartMain.getData().addAll(series1, series2, series3, series4, series5, series6, series7, series8);
+        test();
     }
 
     public void setHostServices(HostServices hostServices) {

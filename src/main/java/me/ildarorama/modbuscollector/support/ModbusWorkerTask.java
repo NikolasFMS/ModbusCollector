@@ -89,7 +89,8 @@ public class ModbusWorkerTask extends Task<DeviceResponse> {
         int j = registers[offset].getValue();
         sb.put(0, (short) i);
         sb.put(1, (short) j);
-        return Float.intBitsToFloat(bb.getInt(0));
+        float f = Float.intBitsToFloat(bb.getInt(0));
+        return Math.round(f*100) / 100f;
     }
 
     private void closeConnection() {
