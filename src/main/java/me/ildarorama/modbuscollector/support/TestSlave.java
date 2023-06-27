@@ -19,7 +19,7 @@ public class TestSlave {
         ModbusSlave slave = ModbusSlaveFactory.createTCPSlave(5002, 1);
         SimpleProcessImage img = new SimpleProcessImage(1);
         List<SimpleInputRegister> regs = new ArrayList<SimpleInputRegister>(10);
-        for(int i=1; i<16; i++) {
+        for(int i=1; i<17; i++) {
             SimpleInputRegister reg = new SimpleInputRegister(i);
             img.addInputRegister(i + 511, reg);
             regs.add(reg);
@@ -54,12 +54,12 @@ public class TestSlave {
         public void run() {
             Random rnd = new Random();
             while(!interrupted()) {
-                for(int i = 0; i<14; i+=2) {
+                for(int i = 0; i<16; i+=2) {
                     int[] res = getFloat(rnd.nextInt(1000)/10f);
                     img.get(i).setValue(res[0]);
                     img.get(i + 1).setValue(res[1]);
                 }
-                img.get(14).setValue(rnd.nextInt(1000));
+                //img.get(14).setValue(rnd.nextInt(1000));
                 try {
                     sleep(1000);
                 } catch (InterruptedException e) {

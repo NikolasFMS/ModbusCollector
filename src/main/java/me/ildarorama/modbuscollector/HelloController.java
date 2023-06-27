@@ -52,14 +52,14 @@ import java.util.ResourceBundle;
 public class HelloController implements Initializable {
     private static final Logger log = LoggerFactory.getLogger(HelloController.class);
     public static final List<String> PARAMS = Arrays.asList(
-            "Тc.отраб.газов на входе 512",
-            "Тc.отраб.газов на выходе 514",
-            "ДР отраб. газов 516",
-            "Тс воды на входе 518",
-            "Тс воды на выходе 520",
+            "Тc.отраб.газов на входе",
+            "Тc.отраб.газов на выходе",
+            "ΔР отраб. газов",
+            "Тс воды на входе",
+            "Тс воды на выходе",
             "P воды на входе",
             "P воды на выходе",
-            "Параметр 8");
+            "ΔР воздух");
 
     private HostServices hostServices;
     private Stage stage = null;
@@ -161,7 +161,7 @@ public class HelloController implements Initializable {
             series5.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA5()));
             series6.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA6()));
             series7.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA7()));
-            series8.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA8() / 100));
+            series8.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA8()));
 
             if (series1.getData().size() > 30) {
                 series1.getData().remove(0);

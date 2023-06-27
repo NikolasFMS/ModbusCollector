@@ -66,15 +66,15 @@
                                        <font>
                                           <Font size="15.0" />
                                        </font></Label>
-                                          <Label prefHeight="19.0" prefWidth="236.0" text="Тc.отраб.газов на выходе 514" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
+                                          <Label prefHeight="19.0" prefWidth="236.0" text="Тc.отраб.газов на выходе" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2">
                                        <font>
                                           <Font size="15.0" />
                                        </font></Label>
-                                          <Label prefHeight="19.0" prefWidth="249.0" text="ДР отраб. газов 516" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
+                                          <Label prefHeight="19.0" prefWidth="249.0" text="ΔР отраб. газов" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3">
                                        <font>
                                           <Font size="15.0" />
                                        </font></Label>
-                                          <Label prefHeight="17.0" prefWidth="242.0" text="Тс воды на входе 518" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4">
+                                          <Label prefHeight="17.0" prefWidth="242.0" text="Тс воды на входе" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4">
                                        <font>
                                           <Font size="15.0" />
                                        </font></Label>
@@ -94,7 +94,7 @@
                                        <font>
                                           <Font size="16.0" />
                                        </font></Label>
-                                          <Label prefHeight="17.0" prefWidth="188.0" text="Тc.отраб.газов на входе 512" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
+                                          <Label prefHeight="17.0" prefWidth="188.0" text="Тc.отраб.газов на входе" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="15.0" />
                                        </font></Label>
@@ -102,11 +102,11 @@
                                        <font>
                                           <Font size="15.0" />
                                        </font></Label>
-                                          <Label prefHeight="17.0" prefWidth="235.0" text="Параметр 8" GridPane.columnIndex="2" GridPane.rowIndex="4">
+                                          <Label prefHeight="17.0" prefWidth="235.0" text="ΔР воздух" GridPane.columnIndex="2" GridPane.rowIndex="4">
                                        <font>
                                           <Font size="15.0" />
                                        </font></Label>
-                                          <Label prefHeight="17.0" prefWidth="217.0" text="Тс воды на выходе 520" GridPane.columnIndex="2" GridPane.rowIndex="1">
+                                          <Label prefHeight="17.0" prefWidth="217.0" text="Тс воды на выходе" GridPane.columnIndex="2" GridPane.rowIndex="1">
                                        <font>
                                           <Font size="15.0" />
                                        </font></Label>

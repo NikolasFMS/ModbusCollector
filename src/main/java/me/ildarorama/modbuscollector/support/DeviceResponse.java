@@ -11,7 +11,7 @@ public class DeviceResponse {
     private float a5;
     private float a6;
     private float a7;
-    private int a8;
+    private float a8;
 
     public float getA1() {
         return a1;
@@ -69,11 +69,11 @@ public class DeviceResponse {
         this.a7 = a7;
     }
 
-    public int getA8() {
+    public float getA8() {
         return a8;
     }
 
-    public void setA8(int a8) {
+    public void setA8(float a8) {
         this.a8 = a8;
     }
 

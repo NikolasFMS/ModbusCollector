@@ -35,7 +35,7 @@ public class DataPersister {
         try {
             conn = DriverManager.getConnection("jdbc:sqlite:collector.db");
             conn.createStatement().execute(
-                    "create table if not exists log(ID INTEGER PRIMARY KEY AUTOINCREMENT, STMP DATETIME NOT NULL, A1 REAL,  A2 REAL,  A3 REAL, A4 REAL, A5 REAL, A6 REAL, A7 REAL, A8 INT)"
+                    "create table if not exists log(ID INTEGER PRIMARY KEY AUTOINCREMENT, STMP DATETIME NOT NULL, A1 REAL,  A2 REAL,  A3 REAL, A4 REAL, A5 REAL, A6 REAL, A7 REAL, A8 REAL)"
             );
             stmt = conn.prepareStatement(
                     "INSERT INTO log(STMP, A1, A2, A3, A4, A5, A6, A7, A8) values (?, ?, ?, ?, ?, ?, ?, ?, ?)"
@@ -121,7 +121,7 @@ public class DataPersister {
                     cell.setCellValue(String.format("%.2f", result.getFloat(9)));
 
                     cell = row.createCell(8);
-                    cell.setCellValue(result.getInt(10));
+                    cell.setCellValue(String.format("%.2f", result.getFloat(10)));
                 }
 
                 try (FileOutputStream outputStream = new FileOutputStream(file)) {
@@ -147,7 +147,7 @@ public class DataPersister {
                 stmt.setFloat(6, resp.getA5());
                 stmt.setFloat(7, resp.getA6());
                 stmt.setFloat(8, resp.getA7());
-                stmt.setInt(9, resp.getA8());
+                stmt.setFloat(9, resp.getA8());
                 stmt.executeUpdate();
             } catch (SQLException e) {
                 log.error("Не могу сохранить запись в БД", e);

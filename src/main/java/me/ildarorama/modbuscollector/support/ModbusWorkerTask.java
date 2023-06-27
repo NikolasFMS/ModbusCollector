@@ -50,8 +50,8 @@ public class ModbusWorkerTask extends Task<DeviceResponse> {
                     updateMessage("Соединен");
                 }
 
-                InputRegister[] registers = conn.readInputRegisters(slave, 512,15);
-                if (registers == null || registers.length != 15) {
+                InputRegister[] registers = conn.readInputRegisters(slave, 512,16);
+                if (registers == null || registers.length != 16) {
                     throw new IllegalStateException("Invalid response");
                 }
                 DeviceResponse resp = parseResponse(registers);
@@ -62,7 +62,7 @@ public class ModbusWorkerTask extends Task<DeviceResponse> {
             } catch (InterruptedException e) {
                 log.info("Завершение опроса");
             } catch (Exception e) {
-                log.info("Ошибка при опросе устройства", e);
+                log.info("Ошибка при опросе устройства: " + e.getMessage(), e);
                 closeConnection();
                 updateMessage("Не соединен");
             }
@@ -80,7 +80,7 @@ public class ModbusWorkerTask extends Task<DeviceResponse> {
         resp.setA5(getFloat(registers,8));
         resp.setA6(getFloat(registers,10));
         resp.setA7(getFloat(registers,12));
-        resp.setA8(registers[14].getValue());
+        resp.setA8(getFloat(registers,14));
         return resp;
     }
 
