@@ -46,7 +46,9 @@
                         <configuration>
                             <fallback>false</fallback>
                             <buildArgs>
-                                <arg>-H:DashboardDump=fortune -H:+DashboardAll --initialize-at-build-time=ch.qos.logback</arg>
+                                <arg>-H:DashboardDump=fortune -H:+DashboardAll
+                                    --initialize-at-build-time=ch.qos.logback
+                                </arg>
                             </buildArgs>
                             <agent>
                                 <enabled>true</enabled>
