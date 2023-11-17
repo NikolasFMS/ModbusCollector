@@ -1,7 +1,7 @@
 package me.ildarorama.modbuscollector.support;
 
 import javafx.scene.control.Alert;
-import me.ildarorama.modbuscollector.HelloController;
+import me.ildarorama.modbuscollector.MainController;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CreationHelper;
@@ -87,7 +87,7 @@ public class DataPersister {
                 cell.setCellValue("Дата");
 
                 int idx = 1;
-                for (String param : HelloController.PARAMS) {
+                for (String param : MainController.PARAMS) {
                     cell = row.createCell(idx);
                     cell.setCellValue(param);
                     idx++;

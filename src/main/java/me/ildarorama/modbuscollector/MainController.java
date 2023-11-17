@@ -30,12 +30,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import me.ildarorama.modbuscollector.support.DataPersister;
+import me.ildarorama.modbuscollector.support.DataSender;
 import me.ildarorama.modbuscollector.support.DeviceResponse;
 import me.ildarorama.modbuscollector.support.ModbusWorkerTask;
 import me.ildarorama.modbuscollector.support.ObjectPropertyBinding;
 import me.ildarorama.modbuscollector.support.SettingsManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,8 +48,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class HelloController implements Initializable {
-    private static final Logger log = LoggerFactory.getLogger(HelloController.class);
+public class MainController implements Initializable {
     public static final List<String> PARAMS = Arrays.asList(
             "Тc.отраб.газов на входе",
             "Тc.отраб.газов на выходе",
@@ -101,6 +99,7 @@ public class HelloController implements Initializable {
     private XYChart.Series<String, Number> series8 = new XYChart.Series<>();
     private final ObservableList<DeviceResponse> items = FXCollections.observableArrayList();
     private DataPersister dataPersister;
+    private DataSender dataSender;
     private static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm:ss");
     private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 
@@ -131,7 +130,7 @@ public class HelloController implements Initializable {
 
     @FXML
     protected void onHelloButtonClick() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("settings.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ModbusCollectorApplication.class.getResource("settings.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 640, 240);
 
         SettingsController ctrl = fxmlLoader.getController();
@@ -151,8 +150,11 @@ public class HelloController implements Initializable {
     public void setThread(ModbusWorkerTask thread) {
         lblState.textProperty().bind(thread.messageProperty());
         dataPersister = new DataPersister();
+        dataSender = new DataSender();
+        dataSender.start();
         thread.valueProperty().addListener((a, b, c) -> {
             dataPersister.persist(c);
+            dataSender.send(c);
             items.add(0, c);
             series1.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA1()));
             series2.getData().add(new XYChart.Data<>(c.getTimestamp().format(TIME_FORMATTER), c.getA2()));
@@ -194,7 +196,7 @@ public class HelloController implements Initializable {
                 Bindings.createStringBinding(new ObjectPropertyBinding<>(thread.valueProperty(), "a8"), thread.valueProperty()));
     }
 
-    private void test() {
+    private void setHidingForChart() {
         chartMain.setAnimated(false);
         for (Node n : chartMain.getChildrenUnmodifiable()) {
             if (n instanceof Legend) {
@@ -291,7 +293,7 @@ public class HelloController implements Initializable {
         series7.setName(PARAMS.get(6));
         series8.setName(PARAMS.get(7));
         chartMain.getData().addAll(series1, series2, series3, series4, series5, series6, series7, series8);
-        test();
+        setHidingForChart();
     }
 
     public void setHostServices(HostServices hostServices) {

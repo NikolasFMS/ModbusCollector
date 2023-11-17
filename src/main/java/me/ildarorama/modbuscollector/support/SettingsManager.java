@@ -7,7 +7,6 @@ import javafx.scene.control.Alert;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -31,6 +30,7 @@ public class SettingsManager {
     private PortSpeedEnum speed = PortSpeedEnum.SPEED_9600;
     private double period = 1;
     private int slave = 1;
+    private String dataSourceUrl;
 
     public static SettingsManager getInstance() {
         return SettingManagerHolder.instance;
@@ -50,6 +50,7 @@ public class SettingsManager {
                 slave = Integer.valueOf(properties.getProperty("slave", "1"));
                 port = properties.getProperty("port");
                 period = Double.valueOf(properties.getProperty("period", "1"));
+                dataSourceUrl = properties.getProperty("datasource", "");
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -64,6 +65,7 @@ public class SettingsManager {
             properties.setProperty("period", Double.toString(period));
             properties.setProperty("slave", Integer.toString(slave));
             properties.setProperty("port", port);
+            properties.setProperty("datasource", dataSourceUrl);
             properties.store(is, "Modbus collector settings file");
             if (saveCallback != null) {
                 saveCallback.run();
@@ -110,5 +112,13 @@ public class SettingsManager {
 
     public void setSlave(int slave) {
         this.slave = slave;
+    }
+
+    public String getDataSourceUrl() {
+        return dataSourceUrl;
+    }
+
+    public void setDataSourceUrl(String dataSourceUrl) {
+        this.dataSourceUrl = dataSourceUrl;
     }
 }

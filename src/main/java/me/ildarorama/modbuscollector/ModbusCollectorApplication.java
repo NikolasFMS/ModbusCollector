@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 
-public class HelloApplication extends Application {
-    private static final Logger log = LoggerFactory.getLogger(HelloApplication.class);
+public class ModbusCollectorApplication extends Application {
+    private static final Logger log = LoggerFactory.getLogger(ModbusCollectorApplication.class);
 
     private final ModbusWorkerTask thread = new ModbusWorkerTask();
 
@@ -22,9 +22,9 @@ public class HelloApplication extends Application {
         stage.setMinHeight(500);
         log.info("Запуск приложения");
         SettingsManager.getInstance().setSaveCallback(thread::refreshConfig);
-        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("hello-view.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(ModbusCollectorApplication.class.getResource("main-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1024, 768);
-        HelloController ctrl = fxmlLoader.getController();
+        MainController ctrl = fxmlLoader.getController();
         ctrl.setThread(thread);
         ctrl.setHostServices(getHostServices());
         stage.setTitle("Сборщик метрик");
@@ -34,10 +34,11 @@ public class HelloApplication extends Application {
     }
 
     @Override
-    public void stop(){
+    public void stop() {
         thread.stopWorker();
         thread.cancel();
     }
+
     public static void main(String[] args) {
         launch();
     }

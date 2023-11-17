@@ -6,6 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 import me.ildarorama.modbuscollector.support.PortSpeedEnum;
@@ -26,6 +27,8 @@ public class SettingsController implements Initializable {
     private Spinner<Integer> edtSlave;
     @FXML
     private Spinner<Double> edtModbusInterval;
+    @FXML
+    private TextField edtDataSourceEndpoint;
     private Stage stage = null;
 
     @Override
@@ -36,7 +39,7 @@ public class SettingsController implements Initializable {
         cbxSpeed.setConverter(new StringConverter<PortSpeedEnum>() {
             @Override
             public String toString(PortSpeedEnum user) {
-                if (user== null){
+                if (user == null) {
                     return null;
                 } else {
                     return Integer.toString(user.speed());
@@ -63,6 +66,7 @@ public class SettingsController implements Initializable {
         edtModbusInterval.getValueFactory().setValue(manager.getPeriod());
         edtSlave.getValueFactory().setValue(manager.getSlave());
         cbxSpeed.getSelectionModel().select(manager.getSpeed());
+        edtDataSourceEndpoint.setText(manager.getDataSourceUrl());
     }
 
     @FXML
@@ -78,6 +82,7 @@ public class SettingsController implements Initializable {
         manager.setPeriod(edtModbusInterval.getValue());
         manager.setSlave(edtSlave.getValue());
         manager.setSpeed(cbxSpeed.getValue());
+        manager.setDataSourceUrl(edtDataSourceEndpoint.getText());
         manager.save();
         stage.close();
     }
