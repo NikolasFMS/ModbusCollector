@@ -89,14 +89,14 @@ public class MainController implements Initializable {
     private TableView<DeviceResponse> tblData;
     @FXML
     private LineChart<String, Number> chartMain;
-    private XYChart.Series<String, Number> series1 = new XYChart.Series<>();
-    private XYChart.Series<String, Number> series2 = new XYChart.Series<>();
-    private XYChart.Series<String, Number> series3 = new XYChart.Series<>();
-    private XYChart.Series<String, Number> series4 = new XYChart.Series<>();
-    private XYChart.Series<String, Number> series5 = new XYChart.Series<>();
-    private XYChart.Series<String, Number> series6 = new XYChart.Series<>();
-    private XYChart.Series<String, Number> series7 = new XYChart.Series<>();
-    private XYChart.Series<String, Number> series8 = new XYChart.Series<>();
+    private final XYChart.Series<String, Number> series1 = new XYChart.Series<>();
+    private final XYChart.Series<String, Number> series2 = new XYChart.Series<>();
+    private final XYChart.Series<String, Number> series3 = new XYChart.Series<>();
+    private final XYChart.Series<String, Number> series4 = new XYChart.Series<>();
+    private final XYChart.Series<String, Number> series5 = new XYChart.Series<>();
+    private final XYChart.Series<String, Number> series6 = new XYChart.Series<>();
+    private final XYChart.Series<String, Number> series7 = new XYChart.Series<>();
+    private final XYChart.Series<String, Number> series8 = new XYChart.Series<>();
     private final ObservableList<DeviceResponse> items = FXCollections.observableArrayList();
     private DataPersister dataPersister;
     private DataSender dataSender;
@@ -227,7 +227,7 @@ public class MainController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         edtFrom.setValue(LocalDate.now());
         edtTo.setValue(LocalDate.now());
-        lstLog.setCellFactory((param) ->
+        lstLog.setCellFactory(param ->
                 new ListCell<ILoggingEvent>() {
                     @Override
                     public void updateItem(ILoggingEvent log, boolean empty) {
@@ -249,37 +249,37 @@ public class MainController implements Initializable {
         dateColumn.setCellValueFactory(v -> new ReadOnlyObjectWrapper<>(v.getValue().getTimestamp().format(DATE_TIME_FORMATTER)));
         tblData.getColumns().add(dateColumn);
 
-        TableColumn<DeviceResponse, String> param1 = new TableColumn<>(PARAMS.get(0));
-        param1.setCellValueFactory(new PropertyValueFactory<>("a1"));
-        tblData.getColumns().add(param1);
+        TableColumn<DeviceResponse, String> column1 = new TableColumn<>(PARAMS.get(0));
+        column1.setCellValueFactory(new PropertyValueFactory<>("a1"));
+        tblData.getColumns().add(column1);
 
-        TableColumn<DeviceResponse, String> param2 = new TableColumn<>(PARAMS.get(1));
-        param2.setCellValueFactory(new PropertyValueFactory<>("a2"));
-        tblData.getColumns().add(param2);
+        TableColumn<DeviceResponse, String> column2 = new TableColumn<>(PARAMS.get(1));
+        column2.setCellValueFactory(new PropertyValueFactory<>("a2"));
+        tblData.getColumns().add(column2);
 
-        TableColumn<DeviceResponse, String> param3 = new TableColumn<>(PARAMS.get(2));
-        param3.setCellValueFactory(new PropertyValueFactory<>("a3"));
-        tblData.getColumns().add(param3);
+        TableColumn<DeviceResponse, String> column3 = new TableColumn<>(PARAMS.get(2));
+        column3.setCellValueFactory(new PropertyValueFactory<>("a3"));
+        tblData.getColumns().add(column3);
 
-        TableColumn<DeviceResponse, String> param4 = new TableColumn<>(PARAMS.get(3));
-        param4.setCellValueFactory(new PropertyValueFactory<>("a4"));
-        tblData.getColumns().add(param4);
+        TableColumn<DeviceResponse, String> column4 = new TableColumn<>(PARAMS.get(3));
+        column4.setCellValueFactory(new PropertyValueFactory<>("a4"));
+        tblData.getColumns().add(column4);
 
-        TableColumn<DeviceResponse, String> param5 = new TableColumn<>(PARAMS.get(4));
-        param5.setCellValueFactory(new PropertyValueFactory<>("a5"));
-        tblData.getColumns().add(param5);
+        TableColumn<DeviceResponse, String> column5 = new TableColumn<>(PARAMS.get(4));
+        column5.setCellValueFactory(new PropertyValueFactory<>("a5"));
+        tblData.getColumns().add(column5);
 
-        TableColumn<DeviceResponse, String> param6 = new TableColumn<>(PARAMS.get(5));
-        param6.setCellValueFactory(new PropertyValueFactory<>("a6"));
-        tblData.getColumns().add(param6);
+        TableColumn<DeviceResponse, String> column6 = new TableColumn<>(PARAMS.get(5));
+        column6.setCellValueFactory(new PropertyValueFactory<>("a6"));
+        tblData.getColumns().add(column6);
 
-        TableColumn<DeviceResponse, String> param7 = new TableColumn<>(PARAMS.get(6));
-        param7.setCellValueFactory(new PropertyValueFactory<>("a7"));
-        tblData.getColumns().add(param7);
+        TableColumn<DeviceResponse, String> column7 = new TableColumn<>(PARAMS.get(6));
+        column7.setCellValueFactory(new PropertyValueFactory<>("a7"));
+        tblData.getColumns().add(column7);
 
-        TableColumn<DeviceResponse, String> param8 = new TableColumn<>(PARAMS.get(7));
-        param8.setCellValueFactory(new PropertyValueFactory<>("a8"));
-        tblData.getColumns().add(param8);
+        TableColumn<DeviceResponse, String> column8 = new TableColumn<>(PARAMS.get(7));
+        column8.setCellValueFactory(new PropertyValueFactory<>("a8"));
+        tblData.getColumns().add(column8);
 
         tblData.setItems(items);
         chartMain.setCreateSymbols(false);
