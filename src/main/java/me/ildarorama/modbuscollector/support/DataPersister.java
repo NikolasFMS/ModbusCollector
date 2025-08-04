@@ -54,7 +54,7 @@ public class DataPersister {
             long tsFrom = from.toInstant(ZoneOffset.UTC).toEpochMilli();
             long tsTo = to.toInstant(ZoneOffset.UTC).toEpochMilli();
             String s = String.format(
-                "select id, stmp, a1, a2, a3, a4, a5, a6, a7, a8 from log where stmp > %d and stmp < %d",
+                "select id, stmp, a1, a2, a3, a4, a5, a6, a7, a8, a9, a10 from log where stmp > %d and stmp < %d",
                 tsFrom,
                 tsTo
             );
@@ -95,6 +95,7 @@ public class DataPersister {
                 sheet.setColumnWidth(7, 5000);
                 sheet.setColumnWidth(8, 5000);
                 sheet.setColumnWidth(9, 5000);
+                sheet.setColumnWidth(10, 5000);
 
                 int rowCount = 0;
 
@@ -159,6 +160,11 @@ public class DataPersister {
                     cell = row.createCell(9);
                     cell.setCellValue(
                         String.format("%.2f", result.getFloat(11))
+                    );
+
+                    cell = row.createCell(10);
+                    cell.setCellValue(
+                        String.format("%.2f", result.getFloat(12))
                     );
                 }
 
